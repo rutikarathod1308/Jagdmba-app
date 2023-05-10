@@ -1,0 +1,21 @@
+.th-name{
+    width: 100px;
+}
+.table th, .table td {
+    padding: 0.75rem;
+  
+    border: 1px solid black;
+}
+.b-name
+{
+    color:#9E4784;
+}
+@media print {
+    .page-head{
+        display: none;
+    }
+    .title-head{
+        padding-top: 10px;
+        text-align: center;
+    }
+}
