@@ -28,6 +28,7 @@ on ld.parent=se.name
 
     return query
 
+
 @frappe.whitelist()
 def get_all():
     query = frappe.db.sql("""
@@ -46,9 +47,9 @@ def get_all():
             INNER JOIN `tabStock Entry Detail` sle ON se.name = sle.parent
             INNER JOIN `tabLot Details` ld ON ld.parent = se.name
     """, as_dict=True)
-
+    print(query)
     return query
-      
+    
         
 
 

@@ -1,85 +1,4 @@
-// function getWithout_allLotMaster(StartDate, endDate) {
-//     frappe.call({
-//         method: 'jagdamba_app.jagdamba.page.beamwise_costing.beamwise_costing.get_all',
-//         args: {
-// 			start_date : StartDate,
-// 			end_date : endDate,
-//         },
-//         callback: function(data) {
-//             var rows = '';
-// 			var header_divs = '';
-			
-//             $.each(data.message, function(i, d) {
-//                 rows += '<tr><td >' + (d.item_name ? d.item_name : '') 
-// 				+ '</td><td >' + (d.qty ? d.qty : '') 
-// 				+'</td><td >'  + (d.basic_rate ? d.basic_rate:'')
-//  				+ '</td><td>' + (d.amount ? d.amount : 0) 
-// 				+ '</td ></tr>';
 
-// 				header_divs += '<p><b>Voucher No:</b> &nbsp; &nbsp;' + (d.name ? d.name : '') + '</p>'
-//             });
-// 			$('#lot-table tbody').html(rows);
-// 			$('#header_id div').html(header_divs);
-//         }
-//     });
-// }
-
-// function getWithout_allLotMaster(StartDate, endDate) {
-//     frappe.call({
-//         method: 'jagdamba_app.jagdamba.page.beamwise_costing.beamwise_costing.get_all',
-//         args: {
-//             start_date: StartDate,
-//             end_date: endDate,
-//         },
-//         callback: function (data) {
-//             var rows = '';
-//             var grouped_data = {};
-//             var voucher_numbers = '';
-// 			var table_row  = '';
-
-//             $.each(data.message, function (i, d) {
-//                 if (d.name in grouped_data) {
-//                     grouped_data[d.name].push(d);					
-//                 } else {
-//                     grouped_data[d.name] = [d];
-//                 }
-//             });
-
-//             for (var voucher_no in grouped_data) {
-//                 var qty = 0;
-// 				var amount = 0; // initialize the quantity sum for this voucher
-//                 rows += '<table class="voucher-table table"><tr><th class="th-name">Item Name</th><th class="th-name">Net Qty</th><th class="th-name">Rate</th><th class="th-name">Amount</th></tr>'; // added header row
-//                 $.each(grouped_data[voucher_no], function (i, d) {
-//                     rows += '<tr><td>' + (d.item_name ? d.item_name : '')
-//                         + '</td><td class="qty">' + (d.qty ? d.qty : '')
-//                         + '</td><td>' + (d.basic_rate ? d.basic_rate : '')
-//                         + '</td><td class="amount">' + (d.amount ? d.amount : 0)
-//                         + '</td></tr>';
-//                     qty += parseFloat(d.qty);
-// 					amount += parseFloat(d.amount); // add the quantity to the sum for this voucher
-//                 });
-				
-                
-// 				console.log(amount)
-// 				rows +=
-// 					'<tr><td  class="center">' + '<b>'+("Item Wise Total") + '</b>' 
-// 					+ '</td><td>' + (qty.toFixed(2))
-// 					+ '</td><td>' + ''
-// 					+ '</td><td>' + (amount.toFixed(2))
-// 					+ '</b></td></tr>';
-// 					rows += '</table><hr>';
-//                 voucher_numbers += '<div class ="row mt-5" ><div class="col-xs-3"><b>Voucher No:</b> &nbsp; &nbsp; ' + voucher_no + '</div>\
-//                 <div class="col-xs-3"><b>Date:</b> ' + (grouped_data[voucher_no][0].posting_date ? moment(grouped_data[voucher_no][0].posting_date).format('DD-MM-YYYY') : '') + '</div><div class="col-xs-3"><b> ' + (grouped_data[voucher_no][0].operation_name ? grouped_data[voucher_no][0].operation_name : '') + '</b></div>\
-//                 <div class="col-xs-3"> <b>Meters: &nbsp;&nbsp;</b>' + (grouped_data[voucher_no][0].meters ? grouped_data[voucher_no][0].meters : '') + '</div>\
-//                </div></div>	' + rows ;
-//                 rows = '';
-				
-//             }
-
-//             $('#voucher-numbers div').html(voucher_numbers);
-//         }
-//     });
-// }
 function getWithout_allLotMaster(Beamno, Lotno) {
     frappe.call({
         method: 'jagdamba_app.jagdamba.page.beamwise_costing.beamwise_costing.get_with_beam',
@@ -153,6 +72,7 @@ function getWith_all_LotMaster() {
           
         },
         callback: function (data) {
+			console.log(data)
             var rows = '';
             var grouped_data = {};
             var voucher_numbers = '';
@@ -234,9 +154,9 @@ frappe.pages['beamwise-costing'].on_page_load = function (wrapper) {
     ');
 
 	var filter = $('\
-	<div><div class="row "><h4 style="color:#9E4784;" class="my-auto ml-3" id="beam_name"> Beam No: &nbsp;</h4><input list="groupid" id="beamno" ><datalist id="groupid" ></datalist>\<div id="beam" hidden></div>\
+	<div><div class="row "><h4 style="color:#9E4784;" class="my-auto ml-3" id="beam_name"> Beam No: &nbsp;</h4><input list="beamid" id="beamno" ><datalist id="beamid" ></datalist>\<div id="beam" hidden></div>\
 	<div class="br"></div>\
-	<div class="row" style="margin-left:100px"><h4 style="color:#9E4784;" class="my-auto ml-3" id="lot_name"> Lot No: &nbsp;</h4><input list="groupids" id="lotno" ><datalist id="groupids" ></datalist>\<div id="lot" hidden></div>\
+	<div class="row" style="margin-left:100px"><h4 style="color:#9E4784;" class="my-auto ml-3" id="lot_name"> Lot No: &nbsp;</h4><input list="lotid" id="lotno" ><datalist id="lotid" ></datalist>\<div id="lot" hidden></div>\
 	<div class="br"></div>\</div>\
 	');
 	var summary = $('<div id="summary"><div id="total_qty"><div></div></div>\
@@ -290,7 +210,7 @@ $(document).ready(function () {
 		method: 'jagdamba_app.jagdamba.page.beamwise_costing.beamwise_costing.beam',
 		callback: function (data) {
 			$.each(data.message, function (i, d) {
-				$('<option>').val(d.name).text(d.name).appendTo('#groupid');
+				$('<option>').val(d.name).text(d.name).appendTo('#beamid');
 			});
 			$('#option');
 		}
@@ -301,7 +221,7 @@ $(document).ready(function () {
 		method: 'jagdamba_app.jagdamba.page.beamwise_costing.beamwise_costing.lot',
 		callback: function (data) {
 			$.each(data.message, function (i, d) {
-				$('<option>').val(d.name).text(d.name).appendTo('#groupids');
+				$('<option>').val(d.name).text(d.name).appendTo('#lotid');
 			});
 			$('#option');
 		}
@@ -309,51 +229,3 @@ $(document).ready(function () {
 })
 
 
-
-// function printDiv() {
-
-	
-// 	var company = document.getElementById('title');
-// 	var beam = document.getElementById('beam');
-// 	var beamno = document.getElementById('beam_name');
-// 	var lot = document.getElementById('lot');
-// 	var lotno = document.getElementById('lot_name')
-// 	var table = document.getElementById('voucher-numbers')
-
-// 	var newWin = window.open('', 'Print-Window');
-
-// 	newWin.document.open();
-
-// 	newWin.document.write('<html>');
-
-	
-
-// 	newWin.document.write('<head>');
-// 	newWin.document.write('<style type="text/css">');
-// 	newWin.document.write('.table-bordered { border: 1px solid #000; border-collapse: collapse; }');
-// 	newWin.document.write('.table-bordered td, .table-bordered th { border: 1px solid #000; font-size:12px}');
-// 	newWin.document.write('</style>');
-// 	newWin.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">')
-// 	newWin.document.write('</head>');
-// 	newWin.document.write('<body onload="window.print()">');
-// 	newWin.document.write('<center><h3>');
-// 	newWin.document.write(company.innerHTML);
-// 	newWin.document.write('</h3></center>');
-// 	newWin.document.write('<br><div><b>');
-// 	newWin.document.write(beamno.innerHTML);
-// 	newWin.document.write(': &nbsp;</b>');
-// 	newWin.document.write(beam.innerHTML);
-// 	newWin.document.write('</div><div><b>');
-// 	newWin.document.write(lotno.innerHTML);
-// 	newWin.document.write(': &nbsp;</b>');
-// 	newWin.document.write(lot.innerHTML);
-// 	newWin.document.write('</div>');
-// 	newWin.document.write('<div class="row" style="margin-top:50px;margin-left:100px"><table class="table-bordered" >');
-// 	newWin.document.write(table.innerHTML);
-// 	newWin.document.write('</div></table>');
-// 	newWin.document.write('</body></html>');
-
-// 	newWin.document.close();
-
-// 	setTimeout(function () { newWin.close(); }, 10);
-// }

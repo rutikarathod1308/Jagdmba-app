@@ -352,7 +352,7 @@ $(document).ready(function () {
 		method: 'jagdamba_app.jagdamba.page.lot_stock_party_wise_1.lot_stock_party_wise_1.customer',
 		callback: function (data) {
 			$.each(data.message, function (i, d) {
-				$('<option>').val(d.name).text(d.name).appendTo('#groupid');
+				$('<option>').val(d.name).text(d.name).appendTo('#groupid').trigger('change');
 			});
 			$('#option');
 		}
@@ -449,7 +449,7 @@ var filters = $('<div class="form-group row main-row" style="margin-top:50px;">\
 			</label>\
 		</div>\
 		\
-		<div class="my-auto" id="select-types">\
+		<div class="mx-auto" id="select-types">\
 			<label class="my-auto" id="select">\
 				<h5 class="my-auto ml-3" id="job">Type &nbsp;</h5>\<div id="to" hidden></div>\<div id="joba" hidden></div>\
 			</label>\
@@ -505,12 +505,11 @@ var filters = $('<div class="form-group row main-row" style="margin-top:50px;">\
 		<label class="my-auto" id="customer-label1"><h5 class="my-auto ml-3"  id="customer-label">Party Name &nbsp;</h5>\</label>\<div id="rb" hidden></div>\
 		</div>\
 		\
-		<div class="my-auto">\
-			<input class="form-control" list="groupid" id="customer" placeholder="Select Party Name..">\
-			<div id="customerstore" hidden></div>\
-			<datalist id="groupid"></datalist>\
-			\
-		</div>\
+		<div class="mx-auto">\
+  <input class="form-control" list="groupid" id="customer" placeholder="Select Party Name.."	 autocomplete="list">\
+  <div id="customerstore" hidden></div>\
+  <datalist id="groupid"></datalist>\
+</div>\
 		\
 	</div>\
 	</div>\
@@ -577,6 +576,7 @@ page.main.append(print,po,filters,po_table, summarys, pcs,sumamry,sales,pendings
 		$("#ra").text(fabricType)
 		var jobType = $('#job-type').val()
 		$('#joba').text(jobType)
+		document.cookie = "startDate=; "
 		getLotMaster(startDate, endDate,customer,fabricType,jobType	);
 
 		if ($('#summarycheck').is(":checked")) {
@@ -670,7 +670,7 @@ page.main.append(print,po,filters,po_table, summarys, pcs,sumamry,sales,pendings
 		var fabricType = $(' #fabric-type').val();
 		var jobType = $('#job-type').val();
 		
-
+		document.cookie = "customer=; "
 		getCustomer_Master(customer, fabricType, jobType);
 		if(customer == ""){
 			getCustomerMaster(startDate, endDate, fabricType, jobType);
@@ -823,24 +823,43 @@ function printDiv() {
 
 	newWin.document.write('</div><div>');
 	
-	// newWin.document.write(summary.innerHTML);
+	newWin.document.write(summary.innerHTML);
 	newWin.document.write('</div></body></html>');
 
 	newWin.document.close();
 
 	setTimeout(function () { newWin.close(); }, 10);		
 	}
-	if (summarychecks.checked) {
+	if(!check.checked){
 		newWin.document.open();
 
-	newWin.document.write('<html>');
-
-	// var table_style = document.getElementById("table_style");
-
-	newWin.document.write('<head>');
+		newWin.document.write('<html>');
+	
+		// var table_style = document.getElementById("table_style");
+	
+		newWin.document.write('<head>');
+		newWin.document.write('<style type="text/css">');
+		newWin.document.write('.table-bordered { border: 1px solid #000; border-collapse: collapse; }');
+		newWin.document.write('.table-bordered td, .table-bordered th { border: 1px solid #000; font-size:12px}');
+		newWin.document.write('</style>');
+		newWin.document.write('</head>');
+		newWin.document.write('<body onload="window.print()">');
+		newWin.document.write('<center><h3>');
+		newWin.document.write(company.innerHTML);
+		newWin.document.write('</h3></center>');
+		
+		newWin.document.write('</div></body></html>');
+	
+		newWin.document.close();
+	
+		setTimeout(function () { newWin.close(); }, 10);	
+	}
+	var a = $('#start-date').val()
+	if(a){
+		newWin.document.write('<head>');
 	newWin.document.write('<style type="text/css">');
 	newWin.document.write('.table-bordered { border: 1px solid #000; border-collapse: collapse; }');
-	newWin.document.write('.table-bordered td, .table-bordered th { border: 1px solid #000;	}');
+	newWin.document.write('.table-bordered td, .table-bordered th { border: 1px solid #000; font-size:12px}');
 	newWin.document.write('</style>');
 	newWin.document.write('</head>');
 	newWin.document.write('<body onload="window.print()">');
@@ -848,27 +867,64 @@ function printDiv() {
 	newWin.document.write(company.innerHTML);
 	newWin.document.write('</h3></center>');
 	// newWin.document.write(reportname.innerHTML);
-	newWin.document.write('<br><div>');
+	newWin.document.write('<br><div><b>');
 	newWin.document.write(datefrom.innerHTML);
-	newWin.document.write(': &nbsp;');
+	newWin.document.write(': &nbsp;</b>');
 	newWin.document.write(fromdate.innerHTML);
-	newWin.document.write('</div><div>');
+	newWin.document.write('</div><div><b>');
 	newWin.document.write(dateto.innerHTML);
-	newWin.document.write(': &nbsp;');
+	newWin.document.write(': &nbsp;</b>');
 	newWin.document.write(todate.innerHTML);
-	newWin.document.write('</div><div>');
+	newWin.document.write('</div><div><b>');
 	newWin.document.write(customer.innerHTML);
-	newWin.document.write(': &nbsp;');
+	newWin.document.write(': &nbsp;</b>');
 	newWin.document.write(customerSelect.innerHTML);
-	newWin.document.write('</div><div>')
+	newWin.document.write('</div><div><b>')
 	newWin.document.write(fabricSelect.innerHTML);
-	newWin.document.write(':&nbsp;')
+	newWin.document.write(':&nbsp;</b>')
 	newWin.document.write(fabric.innerHTML)
 	newWin.document.write('</div><div><b>')
 	newWin.document.write(jobSelect.innerHTML);
 	newWin.document.write(':&nbsp;</b>')
 	newWin.document.write(jobs.innerHTML)
 	newWin.document.write('</div>');
+	newWin.document.write('</div>');
+	newWin.document.write('<div><div style="margin-top:50px;"><table class="table-bordered " >');
+	newWin.document.write(table.innerHTML);
+	newWin.document.write('</table></div>');
+	newWin.document.write('</div><div style="margin-top:50px">');
+	newWin.document.write(summary.innerHTML);
+	newWin.document.write('</div><div>');
+	newWin.document.write(meter.innerHTML);
+	newWin.document.write('</div><div>');
+	newWin.document.write(issue   .innerHTML);
+	newWin.document.write('</div><div>');
+	newWin.document.write(salesi.innerHTML);
+	newWin.document.write('</div><div>');
+	newWin.document.write(pendings.innerHTML);
+
+	newWin.document.write('</div><div>');
+	
+	newWin.document.write(summary.innerHTML);
+	newWin.document.write('</div></body></html>');
+
+	newWin.document.close();
+
+	setTimeout(function () { newWin.close(); }, 10);	
+	}
+	if(summarychecks.checked){
+		newWin.document.write('<head>');
+	newWin.document.write('<style type="text/css">');
+	newWin.document.write('.table-bordered { border: 1px solid #000; border-collapse: collapse; }');
+	newWin.document.write('.table-bordered td, .table-bordered th { border: 1px solid #000; font-size:12px}');
+	newWin.document.write('</style>');
+	newWin.document.write('</head>');
+	newWin.document.write('<body onload="window.print()">');
+	newWin.document.write('<center><h3>');
+	newWin.document.write(company.innerHTML);
+	newWin.document.write('</h3></center>');
+	// newWin.document.write(reportname.innerHTML);
+	
 	newWin.document.write('</div><div style="margin-top:50px">');
 	newWin.document.write(summary.innerHTML);
 	newWin.document.write('</div><div>');
