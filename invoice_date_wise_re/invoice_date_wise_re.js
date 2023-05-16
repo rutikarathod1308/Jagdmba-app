@@ -731,7 +731,7 @@ var print = $('<div class="text-right"><input class="btn btn-primary" type="butt
     </table>\
 	</div>');
 	page.main.append(print,po,filters,po_table,summary);
-	$('#start-date, #end-date, #job-type, #fabric-type' ).on('change', function() {
+	$('#start-date, #end-date, #job-type, #fabric-type' ).on('input', function() {
 		var startDate = $('#start-date').val();
 		$("#from").text(startDate);
 		var endDate = $('#end-date').val();
@@ -743,7 +743,7 @@ var print = $('<div class="text-right"><input class="btn btn-primary" type="butt
 		getallLotMaster(startDate, endDate,fabricType,jobType);
 		
 	})
-	$('#start-date, #end-date, #job-type, #fabric-type,#customer' ).on('change', function() {
+	$('#start-date, #end-date, #job-type, #fabric-type,#customer' ).on('input', function() {
 		var startDate = $('#start-date').val();
 		$("#from").text(startDate);
 		var endDate = $('#end-date').val();
@@ -852,7 +852,7 @@ var print = $('<div class="text-right"><input class="btn btn-primary" type="butt
 			$("#po-table").css("display", "")
 		}
 	});
-	$('#job-type, #fabric-type,#customer' ).on('change', function() {
+	$('#job-type, #fabric-type,#customer' ).on('input', function() {
 		
 		var fabricType = $('#fabric-type').val()
 		

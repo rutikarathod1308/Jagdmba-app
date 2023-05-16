@@ -25,19 +25,18 @@ def get_invoice_master(start_date, end_date, fabric_type,job_type):
         
         status != "Cancelled" and
         posting_date BETWEEN %s  AND %s
+         and
+        fabric_type = %s
         and
         type=%s
-        and
-        fabric_type = %s
+       
        GROUP BY si.name
     """, (start_date, end_date, fabric_type,job_type), as_dict=True)  
-
-    print(query)
     return query
 
 
 @frappe.whitelist()
-def get_all_master():
+def get_all():
     return frappe.db.sql("""
         SELECT  
         si.name,
@@ -89,11 +88,11 @@ def get_customer__master(fabric_type,job_type,customer):
         WHERE 
         
         status != "Cancelled" and
-       
+       fabric_type = %s
+        and
         type=%s
         and
-        fabric_type = %s
-        and
+        
         customer =%s
        GROUP BY si.name
     """, ( fabric_type,job_type,customer), as_dict=True)  

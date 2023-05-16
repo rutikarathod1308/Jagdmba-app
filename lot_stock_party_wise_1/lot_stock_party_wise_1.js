@@ -369,61 +369,7 @@ frappe.pages['lot-stock-party-wise-1'].on_page_load = function(wrapper) {
 		single_column: true
 	});
 // ==========================================================filter html code================================================================
-// var filters = $('<div class="form-group row main-row"">\
-// <div class="row ml-auto mr-auto justify-content-center align-items-center d-flex">\
-// <div class="from-col my-auto\
-// 			<label class="my-auto"><h5 class="my-auto ml-3" id="placeholder"> From Date: &nbsp;</h5></label>\
-//             </div>\
-// 		<div class="col">\
-// 			<input type="date"  class="form-control"  id="start-date">\<div id="from" hidden>\
-// 			</div>\</div>\
-// 			 <div class="from-col my-auto">\
-// 			<label class="my-auto"><h5 class="my-auto ml-3" id="from_dates">To Date:  &nbsp;</h5></label>\
-// 		</div>\
-// 		\
-// 		<div class="">\
-// 			<input type="date" class="my-auto form-control my-auto " id="end-date">\<div id="to" hidden>\
-// 			</div>\
-// 		</div>\
-// 			<div class="from-col my-auto">\
-// 			<label class="my-auto" ><h5 class="my-auto ml-3" id="customer-label">Customer &nbsp;</h5>\</label>\<div id ="rb" hidden>\
-// 			</div>\</div>\
-// 			\
-// 			<div class="my-auto">\<div>\
-// 			<input class="form-control" list="groupid" id="customer" placeholder="Type to search...">\
-// 						<datalist id="groupid" class=""></datalist>\
-// 						</div>\
-// 			</div>\
-// 			<div class="my-auto">\
-//                 <label class="control-label col my-auto text-center" id="select"><b style="font-size:15px" id="abc">Fabric Type</b></label>\<div id ="ra" hidden	>\
-//             </div>\</div>\
-//             \
-//             <div class=" ">\
-//                 <select id="fabric-type" class=" form-control">\
-//                     <option>Woven</option>\
-//                     <option>Knitt</option>\
-//                 </select>\
-//             </div>\
-//             \
-//             \
-// 			<div class ="col">\
-// 			<input type ="checkbox"  id ="summarycheck">Summary\
-// 			</div>\
-// 			<div class ="col">\
-// 			<input type ="checkbox"  id ="allrecords">Get All Records\
-// 			</div>\
-// 			</div>\
-// 			<div class="row">\
-// 			<div class="my-auto">\
-// 			<label><b style="font-size:15px;margin-left:20px" id="job">Type:</b> &nbsp;	</lable>\<div id ="joba" hidden	>\
-// 			</div>\</div>\
-// 			<div class="my-auto">\
-// 			<select id="job-type" class=" form-control">\
-//                     <option>Job </option>\
-//                     <option>self</option>\
-//                 </select>\
-// 			</div>\
-// </div> ');	
+
 
 
 var filters = $('<div class="form-group row main-row" style="margin-top:50px;">\
@@ -560,12 +506,12 @@ var po_table = $('<table class="table table-bordered" style="margin-top:50px;" i
     </table>');
 // ===================================================Adding tables to page================================================================
 		
-		
+
 page.main.append(print,po,filters,po_table, summarys, pcs,sumamry,sales,pendings);
 //======================================================= Filtering Dates==================================================================
 	
 	// Update data when date inputs change
-	$('#start-date, #end-date, #customer, #fabric-type, #job-type' ).on('change', function() {
+	$('#start-date, #end-date, #customer, #fabric-type, #job-type' ).on('input', function() {
 		var startDate = $('#start-date').val();
 		$("#from").text(startDate);
 		var endDate = $('#end-date').val();
@@ -647,7 +593,7 @@ page.main.append(print,po,filters,po_table, summarys, pcs,sumamry,sales,pendings
 		}
 
 	})
-	$('#start-date, #end-date, #fabric-type,#job-type' ).on('change', function() {
+	$('#start-date, #end-date, #fabric-type,#job-type' ).on('input', function() {
 		
 		var startDate = $('#start-date').val();
 		var endDate = $('#end-date').val();
@@ -663,14 +609,14 @@ page.main.append(print,po,filters,po_table, summarys, pcs,sumamry,sales,pendings
 			$("#po-table").css("display", "")
 		}
 	})
-	$('#customer, #fabric-type,#job-type' ).on('change', function() {
+	$('#customer, #fabric-type,#job-type' ).on('input', function() {
 		var startDate = $('#start-date').val();
 		var endDate = $('#end-date').val();
 		var customer = $('#customer').val();	
 		var fabricType = $(' #fabric-type').val();
 		var jobType = $('#job-type').val();
 		
-		document.cookie = "customer=; "
+		// document.cookie = "customer=; "
 		getCustomer_Master(customer, fabricType, jobType);
 		if(customer == ""){
 			getCustomerMaster(startDate, endDate, fabricType, jobType);

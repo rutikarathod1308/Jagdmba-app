@@ -508,7 +508,7 @@ var pendings = $('<div class="summary"  id="pendings">\
 page.main.append(print,po,filters,po_table,summary,meter,salesi,pendings);
 
 
-$('#start-date, #end-date, #customer, #fabric-type, #job-type').on('change', function() {
+$('#start-date, #end-date, #customer, #fabric-type, #job-type').on('input', function() {
 	var startDate = $('#start-date').val();
 	$("#from").text(startDate);
 	var endDate = $('#end-date').val();
@@ -594,7 +594,7 @@ $('#allrecords').click(function () {
 
 })
 
-$('#start-date, #end-date, #fabric-type, #job-type').on('change', function() {
+$('#start-date, #end-date, #fabric-type, #job-type').on('input', function() {
 	var startDate = $('#start-date').val();
 	var endDate = $('#end-date').val();
 	var fabricType = $('#fabric-type').val();
@@ -603,7 +603,7 @@ $('#start-date, #end-date, #fabric-type, #job-type').on('change', function() {
 	
 	
 })
-$('#customer, #fabric-type,#job-type' ).on('change', function() {
+$('#customer, #fabric-type,#job-type' ).on('input', function() {
 	var customer = $('#customer').val();
 	var fabricType = $(' #fabric-type').val();
 	var jobType = $('#job-type').val();

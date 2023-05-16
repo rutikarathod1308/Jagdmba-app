@@ -1,13 +1,13 @@
 
 
-function getallLotMaster(start_date, end_date, Jobtype, Fabrictype) {
+function getallLotMaster(start_date, end_date,fabric_type,job_type) {
     frappe.call({
         method: 'jagdamba_app.jagdamba.page.misc_invoice_registe.misc_invoice_registe.get_invoice_master',
         args: {
 			start_date:start_date,
 			end_date: end_date,
-			job_type : Jobtype,
-			fabric_type : Fabrictype
+			job_type : job_type,
+			fabric_type : fabric_type
         },
 		callback: function(data) {
             var rows = '';
@@ -129,14 +129,14 @@ function getallLotMaster(start_date, end_date, Jobtype, Fabrictype) {
         }
     });
 }	
-function getcustomer_Master(Jobtype, Fabrictype,Customer) {
+function getcustomer_Master(customer,fabric_type,job_type) {
     frappe.call({
         method: 'jagdamba_app.jagdamba.page.misc_invoice_registe.misc_invoice_registe.get_customer__master',
         args: {
 			
-			job_type : Jobtype,
-			fabric_type : Fabrictype,
-			customer : Customer
+			job_type : job_type,
+			fabric_type : fabric_type,
+			customer : customer
 			
         },
         callback: function(data) {
@@ -260,16 +260,16 @@ function getcustomer_Master(Jobtype, Fabrictype,Customer) {
     });
 }
 
-function getcustomerinvoiceMaster(start_date, end_date, Jobtype, Fabrictype,Customer) {
+function getcustomerinvoiceMaster(start_date, end_date,customer,fabric_type,job_type) {
     frappe.call({
         method: 'jagdamba_app.jagdamba.page.misc_invoice_registe.misc_invoice_registe.get_customer_invoice_master',
         args: {
 			
 			start_date:start_date,
 			end_date: end_date,
-			job_type : Jobtype,
-			fabric_type : Fabrictype,
-			customer : Customer
+			job_type : job_type,
+			fabric_type : fabric_type,
+			customer : customer
         },
         callback: function(data) {
             var rows = '';
@@ -396,7 +396,7 @@ function getcustomerinvoiceMaster(start_date, end_date, Jobtype, Fabrictype,Cust
 
 function getall_InvoiceMaster() {
     frappe.call({
-        method: 'jagdamba_app.jagdamba.page.misc_invoice_registe.misc_invoice_registe.get_all_master',
+        method: 'jagdamba_app.jagdamba.page.misc_invoice_registe.misc_invoice_registe.get_all',
         args: {
 			
 			
@@ -544,7 +544,7 @@ frappe.pages['misc_invoice-registe'].on_page_load = function(wrapper) {
 		single_column: true
 	});
 
-
+	
 	var po = $('<div style="margin-top:52px">\
 	<div class="mt-5">\
 	<div class="mt-5">\
@@ -707,32 +707,32 @@ var print = $('<div class="text-right"><input class="btn btn-primary" type="butt
 	page.main.append(print,po,filters,po_table,summary);
 
 
-	$('#start-date, #end-date, #job-type, #fabric-type' ).on('change', function() {
-		var startDate = $('#start-date').val();
-		$("#from").text(startDate);
-		var endDate = $('#end-date').val();
-		var fabricType = $('#fabric-type').val()
-		$("#ra").text(fabricType)
-		var jobType = $('#job-type').val()
-		$("#to").text(endDate);
+	$('#start-date, #end-date, #job-type, #fabric-type' ).on('input', function() {
+		var start_date = $('#start-date').val();
+		$("#from").text(start_date);
+		var end_date = $('#end-date').val();
+		var fabric_type = $('#fabric-type').val()
+		$("#ra").text(fabric_type)
+		var job_type = $('#job-type').val()
+		$("#to").text(end_date);
 		
 
 
-		getallLotMaster(startDate, endDate,fabricType,jobType);
+		getallLotMaster(start_date, end_date,fabric_type,job_type);
 		
 	})
-	$('#start-date, #end-date, #job-type, #fabric-type,#customer' ).on('change', function() {
-		var startDate = $('#start-date').val();
-		$("#from").text(startDate);
-		var endDate = $('#end-date').val();
-		$("#to").text(endDate);
-		var fabricType = $('#fabric-type').val()
-		$("#ra").text(fabricType)
-		var jobType = $('#job-type').val()
-		$("#joba").text(jobType);
+	$('#start-date, #end-date, #job-type, #fabric-type,#customer' ).on('input', function() {
+		var start_date = $('#start-date').val();
+		$("#from").text(start_date);
+		var end_date = $('#end-date').val();
+		$("#to").text(end_date);
+		var fabric_type = $('#fabric-type').val()
+		$("#ra").text(fabric_type)
+		var job_type = $('#job-type').val()
+		$("#joba").text(job_type);
 		var customer = $('#customer').val()
 		$("#rb").text(customer)
-		getcustomerinvoiceMaster(startDate, endDate,fabricType,jobType,customer);
+		getcustomerinvoiceMaster(start_date, end_date,customer,fabric_type,job_type)
 		if ($('#allrecords').removeAttr('checked')) {
 		
 			$("#start-date").css("display", "")
@@ -830,30 +830,26 @@ var print = $('<div class="text-right"><input class="btn btn-primary" type="butt
 			$("#po-table").css("display", "")
 		}
 	});
-	$('#job-type, #fabric-type,#customer' ).on('change', function() {
+	$('#job-type, #fabric-type,#customer' ).on('input', function() {
 		
-		var fabricType = $('#fabric-type').val()
+		var fabric_type = $('#fabric-type').val()
 		
-		var jobType = $('#job-type').val()
+		var job_type = $('#job-type').val()
 	
 		var customer = $('#customer').val()
 		
-		getcustomer_Master(fabricType,jobType,customer);
+		getcustomer_Master(customer,fabric_type,job_type);
 		
 	})
-		// wrapper.page.set_primary_action('Print', function() {
-		// 	var style = document.createElement('style');
-		// 	style.textContent = '@media print { div.container.page-body{ padding: 0; margin-left: 3.3rem;}}';
-		// 	style.textContent += '@media print { div.form-group.row.mainNone-row { display: block; } }';
-		// 	document.head.appendChild(style);
-		// 	window.print();
-		//   });
-
-
-
-
 
 	
+	
+
+
+
+
+
+		
 }	
 
 function printDiv() {
